@@ -102,6 +102,10 @@ body{
     bottom: 6px;
     left: 44px;
 }
+#move-left{
+    left: 6px;
+    top: 44px;
+}
 #reset-view{
     left: 44px;
     top: 44px;
