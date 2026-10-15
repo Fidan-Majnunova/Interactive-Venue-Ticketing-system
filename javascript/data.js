@@ -17,5 +17,39 @@ const sections = [
             {name:"center", seatsPerRow: 11}
         ]
 
+    },
+    {
+        id:"box",
+        name:"Central Box",  
+        price: 20,
+        rows: 4,
+        blocks: [
+            {name:"left",seatsPerRow: 6},
+            {name: "center",seatsPerRow: 11},
+            {name:"right",seatsPerRow: 6},
+        ]
+    },
+    {
+        id:"lower-circle",
+        name:"Lower Circle",
+        price: 15,
+        rows: 3,
+        blocks: [
+            {name:"left",seatsPerRow: 5},
+            {name: "center",seatsPerRow: 11},
+            {name:"right",seatsPerRow: 5}
+            
+        ]
+    },
+    {
+        id:"upper-circle",
+        name:"Upper Circle",
+        price: 10,
+        rows: 3,
+        blocks: [
+            {name:"left",seatsPerRow: 8},
+            {name: "center",seatsPerRow: 9},
+            {name:"right",seatsPerRow: 8}
+        ]
     }
-]
+];
