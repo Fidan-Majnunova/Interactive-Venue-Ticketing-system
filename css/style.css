@@ -176,6 +176,19 @@ body{
     background: #aaa9a9;
     cursor: not-allowed;
 }
+.price-10{
+    background: #1a1ab1;
+}
+.price-15{
+    background: #db8f0a;
+}
+.price-20{
+    background: #127e5d;
+}
+price-25{
+    background: #da3e3e;
+}
+
 /*===Basket==*/
 #cart-items{
     list-style: none;
