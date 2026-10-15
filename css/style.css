@@ -110,6 +110,87 @@ body{
     left: 44px;
     top: 44px;
 }
+/*===Map and locations===*/
+#map-viewport{
+    position: relative;
+    height: 500px;
+    overflow: hidden;
+    background: #f4f4f6;
+    border: 1px solid #767474;
+    border-radius: 8px;
+
+}
+#map{
+    width: 900px;
+    height: 700px;
+    position: relative;
+}
+.seat{
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    border: none;
+    border-radius: 4px 4px 4px 4px;
+    color: white;
+    font-size: 10px;
+    cursor: pointer;
+}
+.seat:hover{
+    background-color: #817f7f;
+}
+.seat.inspected{
+    background-color: #e3bd27;
+    color: #222;
+    outline: 2px solid #333232;
+    z-index: 1;
+}
+.seat.unavailable{
+    background: #a7a5a5;
+    font-size: 0;
+    cursor: not-allowed;
+}
+.seat.in-cart{
+    background: #222;
+    font-size: 0;
+}
+/*===Seat info===*/
+#seat-info{
+    margin-bottom: 12px;
+}
+#add-to-cart{
+    color: white;
+    background-color: #0e101e;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+#add-to-cart:hover{
+    background-color: #1e2869;
+}
+#add-to-cart:disabled{
+    background: #aaa9a9;
+    cursor: not-allowed;
+}
+/*===Basket==*/
+#cart-items{
+    list-style: none;
+    padding: 0;
+    margin: 0 0 12px;
+}
+#cart-items li{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    background: #bdbfcb;
+    border-radius: 6px;
+}
 
 
 .footer{
