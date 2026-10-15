@@ -53,3 +53,22 @@ const sections = [
         ]
     }
 ];
+const unavailableSeats = [
+  "stalls-1-5", "stalls-1-6", "stalls-1-7",
+  "stalls-2-9", "stalls-2-10",
+  "stalls-3-14", "stalls-3-15",
+  "stalls-4-3", "stalls-4-4",
+  "stalls-5-18", "stalls-5-19",
+  "stalls-6-8", "stalls-6-9",
+  "stalls-7-12", "stalls-7-13",
+  "box-1-8", "box-1-9",
+  "box-2-15",
+  "box-3-4",
+  "box-4-20",
+  "lower-circle-1-6",
+  "lower-circle-2-10",
+  "lower-circle-3-15",
+  "upper-circle-1-3",
+  "upper-circle-2-12",
+  "upper-circle-3-18"
+];
