@@ -1,66 +1,68 @@
 const priceCategories = [
-    {price: 10, cssClass: "price-10"},   //price-color combinations
-    {price: 15, cssClass: "price-15"},
-    {price: 20, cssClass: "price-20"},
-    {price: 25, cssClass: "price-25"}
+  {price: 10, cssClass: "price-10"},
+  {price: 15, cssClass: "price-15"},
+  {price: 20, cssClass: "price-20"},
+  {price: 25, cssClass: "price-25"}
 ];
-//parter
-const sections = [
-    {
-        id:"parter",
-        name:"Parter",
-        price: 25,
-        rows: 7,
-        blocks: [
-            {name:"left", seatsPerRow: 5},
-            {name:"right", seatsPerRow: 5},
-            {name:"center", seatsPerRow: 11}
-        ]
 
-    },
-    {
-        id:"box",
-        name:"Central Box",  
-        price: 20,
-        rows: 4,
-        blocks: [
-            {name:"left",seatsPerRow: 6},
-            {name: "center",seatsPerRow: 11},
-            {name:"right",seatsPerRow: 6},
-        ]
-    },
-    {
-        id:"lower-circle",
-        name:"Lower Circle",
-        price: 15,
-        rows: 3,
-        blocks: [
-            {name:"left",seatsPerRow: 5},
-            {name: "center",seatsPerRow: 11},
-            {name:"right",seatsPerRow: 5}
-            
-        ]
-    },
-    {
-        id:"upper-circle",
-        name:"Upper Circle",
-        price: 10,
-        rows: 3,
-        blocks: [
-            {name:"left",seatsPerRow: 8},
-            {name: "center",seatsPerRow: 9},
-            {name:"right",seatsPerRow: 8}
-        ]
-    }
+//Sections
+const sections = [
+  {
+    id: "parter",
+    name: "Parter",
+    price: 25,
+    rows: 7,
+    blocks: [
+      {name: "left", seatsPerRow: 5},
+      {name: "center", seatsPerRow: 11},
+      {name: "right", seatsPerRow: 5}
+    ]
+  },
+  {
+    id: "box",
+    name: "Central Box",
+    price: 20,
+    rows: 4,
+    blocks: [
+      {name: "left", seatsPerRow: 6},
+      {name: "center", seatsPerRow: 11},
+      {name: "right", seatsPerRow: 6}
+    ]
+  },
+  {
+    id: "lower-circle",
+    name: "Lower Circle",
+    price: 15,
+    rows: 3,
+    blocks: [
+      {name: "left", seatsPerRow: 5},
+      {name: "center", seatsPerRow: 11},
+      {name: "right", seatsPerRow: 5}
+    ]
+  },
+  {
+    id: "upper-circle",
+    name: "Upper Circle",
+    price: 10,
+    rows: 3,
+    blocks: [
+      {name: "left", seatsPerRow: 8},
+      {name: "center", seatsPerRow: 9},
+      {name: "right", seatsPerRow: 8}
+    ]
+  }
 ];
+
+//Unavailable seats 
+//Seat id = section id - row - seat number  //I identified some seats as unavailable randomly.
 const unavailableSeats = [
-  "stalls-1-5", "stalls-1-6", "stalls-1-7",
-  "stalls-2-9", "stalls-2-10",
-  "stalls-3-14", "stalls-3-15",
-  "stalls-4-3", "stalls-4-4",
-  "stalls-5-18", "stalls-5-19",
-  "stalls-6-8", "stalls-6-9",
-  "stalls-7-12", "stalls-7-13",
+  "parter-1-5", "parter-1-6", "parter-1-7",
+  "parter-2-9", "parter-2-10",
+  "parter-3-14", "parter-3-15",
+  "parter-4-3", "parter-4-4",
+  "parter-5-18", "parter-5-19",
+  "parter-6-8", "parter-6-9",
+  "parter-7-12", "parter-7-13",
   "box-1-8", "box-1-9",
   "box-2-15",
   "box-3-4",
