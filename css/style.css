@@ -15,14 +15,16 @@ body{
 .layout{
     display: grid;
     grid-template-columns: 2fr 1fr;
+    grid-template-rows: auto 1fr;
     gap:16px;
     padding: 16px;
+    align-items: start;
 }
 #map-section{
     grid-row: 1 / 3;
 }
 
-/*====Legends====*/
+/*Legends*/
 #legend{
     display: flex;
     flex-wrap: wrap;
@@ -46,7 +48,7 @@ body{
     height: 12px;
     border-radius: 50%;
 }
-/*===Map control buttons===*/
+/*Map control buttons*/
 #controls{
     display:flex;
     justify-content: center;
@@ -110,11 +112,11 @@ body{
     left: 44px;
     top: 44px;
 }
-/*===Map and locations===*/
+/*Map and locations*/
 #map-viewport{
     position: relative;
     height: 500px;
-    overflow: hidden;
+    overflow: auto;
     background: #f4f4f6;
     border: 1px solid #767474;
     border-radius: 8px;
@@ -124,6 +126,26 @@ body{
     width: 900px;
     height: 700px;
     position: relative;
+}
+stage{
+    position: absolute;
+    left: 250px;
+    width: 400px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    background: #ccc;
+    border-radius: 6px;
+    font-weight: bold;
+    color: #555;
+}
+.section-label{
+    position: absolute;
+    left: 0;
+    width: 900px;
+    text-align: center;
+    font-size: 13px;
+    color: #666;
 }
 .seat{
     position: absolute;
@@ -185,11 +207,11 @@ body{
 .price-20{
     background: #127e5d;
 }
-price-25{
+.price-25{
     background: #da3e3e;
 }
 
-/*===Basket==*/
+/*Basket*/
 #cart-items{
     list-style: none;
     padding: 0;
@@ -204,7 +226,6 @@ price-25{
     background: #bdbfcb;
     border-radius: 6px;
 }
-
 
 .footer{
     text-align: center;
