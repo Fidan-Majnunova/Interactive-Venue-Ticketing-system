@@ -31,7 +31,7 @@ function buildLegend() {
     dot.className = "legend-dot " + category.cssClass;
 
     item.appendChild(dot);
-    item.append(category.price + " ₼");
+    item.append(category.price + " man");
     legendElement.appendChild(item);
   });
 }
@@ -57,7 +57,7 @@ function createSeat(section, row, seatNumber, x, y) {
   mapElement.appendChild(seat);
 }
 
-// ===== Stage (at the bottom) =====
+//Stage (at the bottom)
 function buildStage(top) {
   const stage = document.createElement("div");
   stage.className = "stage";
@@ -120,19 +120,84 @@ let inspectedSeat = null;   // the seat that is being inspected now
 
 addButton.disabled = true;  // nothing to add yet
 
+//Cart
+const cartItemsElement = document.getElementById("cart-items");
+const cartTotalElement = document.getElementById("cart-total");
+
+let cart = [];   // list of tickets will be here: { id, sectionName, row, number, price }
+
+function renderCart() {
+  cartItemsElement.innerHTML = "";
+  let total = 0;
+
+  cart.forEach(function (ticket) {
+    const li = document.createElement("li");
+
+    const name = document.createElement("span");
+    name.textContent = ticket.sectionName + ", row " + ticket.row + ", seat " + ticket.number;
+
+    const price = document.createElement("span");
+    price.textContent = ticket.price + " man";
+
+    li.appendChild(name);
+    li.appendChild(price);
+    cartItemsElement.appendChild(li);
+
+    total += ticket.price;
+  });
+  cartTotalElement.textContent = total + " man";
+}
+
+function addToCart(seat) {
+  const id = seat.dataset.id;
+
+  const alreadyInCart = cart.some(function (ticket) {
+    return ticket.id === id;
+  });
+
+  if (alreadyInCart || seat.classList.contains("unavailable")) {
+    return;   // adding the same seat twice, adding unavailable seats not allowed
+  }
+
+  const section = sections.find(function (s) {
+    return s.id === seat.dataset.section;
+  });
+
+  cart.push({
+    id: id,
+    sectionName: section.name,
+    row: seat.dataset.row,
+    number: seat.dataset.number,
+    price: section.price
+  });
+
+  seat.classList.remove("inspected");
+  seat.classList.add("in-cart");
+  inspectedSeat = null;
+  addButton.disabled = true;
+
+  showSeatInfo(seat);
+  renderCart();
+}
+
+//Seat inspection
 function clearInspected() {
   if (inspectedSeat) {
     inspectedSeat.classList.remove("inspected");
     inspectedSeat = null;
   }
 }
-
 function showSeatInfo(seat) {
   const section = sections.find(function (s) {
     return s.id === seat.dataset.section;
   });
-  const isUnavailable = seat.classList.contains("unavailable");
-  const status = isUnavailable ? "Unavailable" : "Inspected";
+
+  let status = "Inspected";
+  if (seat.classList.contains("unavailable")) {
+    status = "Unavailable";
+  } else if (seat.classList.contains("in-cart")) {
+    status = "In cart";
+  }
 
   seatInfoElement.innerHTML = `
     <p>Section: <strong>${section.name}</strong></p>
@@ -145,22 +210,27 @@ function showSeatInfo(seat) {
 
 mapElement.addEventListener("click", function (event) {
   const seat = event.target.closest(".seat");
-  if (!seat) {
-    return;   // the click was not on a seat
+  if (!seat) { // the click was not on a seat
+    return;   
   }
 
   clearInspected();
 
-  if (seat.classList.contains("unavailable")) {
+  if (seat.classList.contains("unavailable") || seat.classList.contains("in-cart")) {
     addButton.disabled = true;
   } else {
     seat.classList.add("inspected");
     inspectedSeat = seat;
     addButton.disabled = false;
   }
-
+  
   showSeatInfo(seat);
 });
 
+addButton.addEventListener("click", function () {
+  if (inspectedSeat) {
+    addToCart(inspectedSeat);
+  }
+});
 buildLegend();
 buildVenue();
