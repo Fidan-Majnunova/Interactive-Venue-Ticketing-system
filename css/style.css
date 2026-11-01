@@ -226,6 +226,21 @@ stage{
     background: #bdbfcb;
     border-radius: 6px;
 }
+.cart-right{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.remove-btn{
+    border: none;
+    background: none;
+    color: #a33;
+    font-size: 16px;
+    cursor: pointer;
+}
+.remove-btn:hover{
+    color: #d00;
+}
 
 .footer{
     text-align: center;

@@ -1,11 +1,11 @@
-const SEAT_SIZE = 22;                 
-const SEAT_GAP = 6;                   
-const STEP = SEAT_SIZE + SEAT_GAP;    
-const AISLE = 40;                     
-const SECTION_GAP = 40;               
-const TOP_MARGIN = 20;                
-const STAGE_HEIGHT = 40;              
-const MAP_WIDTH = 900;                
+const SEAT_SIZE = 22;
+const SEAT_GAP = 6;
+const STEP = SEAT_SIZE + SEAT_GAP;
+const AISLE = 40;
+const SECTION_GAP = 40;
+const TOP_MARGIN = 20;
+const STAGE_HEIGHT = 40;
+const MAP_WIDTH = 900;
 
 const mapElement = document.getElementById("map");
 const legendElement = document.getElementById("legend");
@@ -31,7 +31,7 @@ function buildLegend() {
     dot.className = "legend-dot " + category.cssClass;
 
     item.appendChild(dot);
-    item.append(category.price + " man");
+    item.append(category.price + " ₼");
     legendElement.appendChild(item);
   });
 }
@@ -57,7 +57,7 @@ function createSeat(section, row, seatNumber, x, y) {
   mapElement.appendChild(seat);
 }
 
-//Stage (at the bottom)
+//Stage (at the bottom) in teatr ticket ordering, the stage is usually at the bottom.
 function buildStage(top) {
   const stage = document.createElement("div");
   stage.className = "stage";
@@ -113,10 +113,11 @@ function buildVenue() {
   // stage goes under the last section
   buildStage(y);
 
-  // map height fits the content
   mapElement.style.height = (y + STAGE_HEIGHT + 20) + "px";
 }
+
 let inspectedSeat = null;   // the seat that is being inspected now
+let shownSeat = null;       // the seat whose details are on the panel now
 
 addButton.disabled = true;  // nothing to add yet
 
@@ -124,7 +125,7 @@ addButton.disabled = true;  // nothing to add yet
 const cartItemsElement = document.getElementById("cart-items");
 const cartTotalElement = document.getElementById("cart-total");
 
-let cart = [];   // list of tickets will be here: { id, sectionName, row, number, price }
+let cart = [];   // cart { id, sectionName, row, number, price }
 
 function renderCart() {
   cartItemsElement.innerHTML = "";
@@ -136,16 +137,29 @@ function renderCart() {
     const name = document.createElement("span");
     name.textContent = ticket.sectionName + ", row " + ticket.row + ", seat " + ticket.number;
 
-    const price = document.createElement("span");
-    price.textContent = ticket.price + " man";
+    const right = document.createElement("span");
+    right.className = "cart-right";
 
+    const price = document.createElement("span");
+    price.textContent = ticket.price + " ₼";
+
+    const removeButton = document.createElement("button");
+    removeButton.type = "button";
+    removeButton.className = "remove-btn";
+    removeButton.textContent = "✕";
+    removeButton.title = "Remove ticket";
+    removeButton.setAttribute("aria-label", "Remove " + name.textContent);
+    removeButton.dataset.id = ticket.id;
+
+    right.appendChild(price);
+    right.appendChild(removeButton);
     li.appendChild(name);
-    li.appendChild(price);
+    li.appendChild(right);
     cartItemsElement.appendChild(li);
 
     total += ticket.price;
   });
-  cartTotalElement.textContent = total + " man";
+  cartTotalElement.textContent = total + " ₼";
 }
 
 function addToCart(seat) {
@@ -180,6 +194,31 @@ function addToCart(seat) {
   renderCart();
 }
 
+function removeFromCart(id) {
+  cart = cart.filter(function (ticket) {
+    return ticket.id !== id;
+  });
+
+  const seat = mapElement.querySelector('.seat[data-id="' + id + '"]');
+  if (seat) {
+    seat.classList.remove("in-cart");
+
+    if (shownSeat === seat) {
+      seatInfoElement.innerHTML = "<p>Select a seat on the map</p>";
+      shownSeat = null;
+    }
+  }
+
+  renderCart();
+}
+
+cartItemsElement.addEventListener("click", function (event) {
+  const button = event.target.closest(".remove-btn");
+  if (button) {
+    removeFromCart(button.dataset.id);
+  }
+});
+
 //Seat inspection
 function clearInspected() {
   if (inspectedSeat) {
@@ -187,7 +226,9 @@ function clearInspected() {
     inspectedSeat = null;
   }
 }
+
 function showSeatInfo(seat) {
+  shownSeat = seat;
   const section = sections.find(function (s) {
     return s.id === seat.dataset.section;
   });
@@ -211,7 +252,7 @@ function showSeatInfo(seat) {
 mapElement.addEventListener("click", function (event) {
   const seat = event.target.closest(".seat");
   if (!seat) { // the click was not on a seat
-    return;   
+    return;
   }
 
   clearInspected();
@@ -223,7 +264,7 @@ mapElement.addEventListener("click", function (event) {
     inspectedSeat = seat;
     addButton.disabled = false;
   }
-  
+
   showSeatInfo(seat);
 });
 
@@ -232,5 +273,6 @@ addButton.addEventListener("click", function () {
     addToCart(inspectedSeat);
   }
 });
+
 buildLegend();
 buildVenue();
