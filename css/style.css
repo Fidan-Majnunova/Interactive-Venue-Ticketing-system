@@ -250,6 +250,11 @@ h2{
     padding: 0;
     margin: 0 0 12px;
 }
+#cart-items li.empty-cart{
+    background: none;
+    color: #777;
+    padding-left: 0;
+}
 #cart-items li{
     display: flex;
     justify-content: space-between;
@@ -281,7 +286,6 @@ h2{
     padding: 16px;
     color: #1f2430;
 }
-/*for small screens*/
 @media (max-width: 800px){
     .layout{
         grid-template-columns: 1fr;

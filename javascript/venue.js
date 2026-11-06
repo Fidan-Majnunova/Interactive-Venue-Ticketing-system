@@ -172,15 +172,19 @@ function renderCart() {
 
     total += ticket.price;
   });
+  if (cart.length === 0) {
+    const empty = document.createElement("li");
+    empty.className = "empty-cart";
+    empty.textContent = "Your cart is empty";
+    cartItemsElement.appendChild(empty);
+  }
   cartTotalElement.textContent = total + " ₼";
 }
 
-
-function saveCart() { //Saving the cart in localStorage (only seat ids are saved)
-  const ids = cart.map(function (ticket) {
+function saveCart() { //I am saving the cart in localStorage (only seat ids are saved)
+  const ids = cart.map(function(ticket) {
     return ticket.id;
   });
-
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(ids));
   } catch (error) {

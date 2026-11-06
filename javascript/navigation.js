@@ -58,29 +58,40 @@ function moveMap(dx, dy) {
 }
 
 function resetMap() {
-  zoom = 1;
-  moveX = (mapViewport.clientWidth - MAP_WIDTH) / 2;
+  // I want the whole map to fit in the box, so I check the box width first
+  let fitZoom = mapViewport.clientWidth / MAP_WIDTH;
+
+  // on big screens the map should not be bigger than normal
+  if (fitZoom > 1) {
+    fitZoom = 1;
+  }
+  // on very small screens the map should not be smaller than the minimum
+  if (fitZoom < MIN_ZOOM) {
+    fitZoom = MIN_ZOOM;
+  }
+
+  zoom = Math.round(fitZoom * 100) / 100;
+  moveX = (mapViewport.clientWidth - MAP_WIDTH * zoom) / 2;  // map stays in the middle
   moveY = 0;
   updateMap();
 }
-
 zoomInBtn.addEventListener("click", function () {
-  zoomMap(zoom + ZOOM_STEP);
+    zoomMap(zoom + ZOOM_STEP);
 });
 zoomOutBtn.addEventListener("click", function () {
-  zoomMap(zoom - ZOOM_STEP);
+    zoomMap(zoom - ZOOM_STEP);
 });
 document.getElementById("move-up").addEventListener("click", function () {
-  moveMap(0, MOVE_STEP);
+    moveMap(0, MOVE_STEP);
 });
 document.getElementById("move-down").addEventListener("click", function () {
-  moveMap(0, -MOVE_STEP);
+    moveMap(0, -MOVE_STEP);
 });
 document.getElementById("move-left").addEventListener("click", function () {
-  moveMap(MOVE_STEP, 0);
+    moveMap(MOVE_STEP, 0);
 });
 document.getElementById("move-right").addEventListener("click", function () {
-  moveMap(-MOVE_STEP, 0);
+    moveMap(-MOVE_STEP, 0);
 });
 document.getElementById("reset-view").addEventListener("click", resetMap);
 
