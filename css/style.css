@@ -4,24 +4,39 @@
 body{
     margin: 0;
     font-family: Arial, sans-serif;
-    color: black;
-    background-color: burlywood;
+    color: #1f2430;
+    background-color: #eef0f6;
 }
 .site-header{
+    background: #1e2a5a;
+    color: white;
+    padding: 16px 24px;
+}
+.site-header h1{
+    margin: 0;
     font-family: 'Times New Roman', Times, serif;
-    font-weight: 200;
-
+    font-size: 24px;
+    font-weight: normal;
 }
 .layout{
     display: grid;
     grid-template-columns: 2fr 1fr;
     grid-template-rows: auto 1fr;
-    gap:16px;
+    gap: 16px;
     padding: 16px;
     align-items: start;
 }
 #map-section{
     grid-row: 1 / 3;
+}
+#map-section, #details-section, #cart-section{
+    background: white;
+    padding: 16px;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+h2{
+    margin-top: 0;
 }
 
 /*Legends*/
@@ -38,33 +53,36 @@ body{
     gap: 6px;
     background: white;
     padding: 6px 12px;
-    border: 1px solid #e5e1e1;
+    border: 1px solid #dcdfe8;
     border-radius: 20px;
     font-size: 16px;
-
 }
 .legend-dot{
     width: 12px;
     height: 12px;
     border-radius: 50%;
 }
+
 /*Map control buttons*/
 #controls{
-    display:flex;
+    display: flex;
     justify-content: center;
     align-items: center;
     gap: 15px;
-    margin-bottom:12px;
+    margin-bottom: 12px;
 }
-
 #controls button{
-    color: rgb(119, 119, 119);
-    border:1px solid rgb(191, 176, 176);
+    background: white;
+    color: #777;
+    border: 1px solid #c9cde0;
     cursor: pointer;
-
 }
 #controls button:hover{
-    background-color: #cbccda;
+    background-color: #e3e6f3;
+}
+#controls button:disabled{
+    opacity: 0.4;
+    cursor: not-allowed;
 }
 #zoom-buttons{
     display: flex;
@@ -82,8 +100,8 @@ body{
     width: 120px;
     height: 120px;
     border-radius: 50%;
-    background: rgb(214, 212, 212);
-    border:1px solid #b8b4b4;
+    background: #e6e8f0;
+    border: 1px solid #c9cde0;
 }
 #pad button{
     position: absolute;
@@ -112,13 +130,14 @@ body{
     left: 44px;
     top: 44px;
 }
+
 /*Map and locations*/
 #map-viewport{
     position: relative;
     height: 500px;
     overflow: hidden;
-    background: #f4f4f6;
-    border: 1px solid #767474;
+    background: #fafafc;
+    border: 1px solid #c9cde0;
     border-radius: 8px;
 }
 #map{
@@ -128,17 +147,17 @@ body{
     width: 900px;
     transform-origin: 0 0;
 }
-stage{
+.stage{
     position: absolute;
     left: 250px;
     width: 400px;
     height: 40px;
     line-height: 40px;
     text-align: center;
-    background: #ccc;
+    background: #c9cde0;
     border-radius: 6px;
     font-weight: bold;
-    color: #555;
+    color: #1e2a5a;
 }
 .section-label{
     position: absolute;
@@ -146,58 +165,23 @@ stage{
     width: 900px;
     text-align: center;
     font-size: 13px;
-    color: #666;
+    color: #555;
 }
+
+/*Seats*/
 .seat{
     position: absolute;
     width: 22px;
     height: 22px;
     padding: 0;
     border: none;
-    border-radius: 4px 4px 4px 4px;
+    border-radius: 4px;
     color: white;
     font-size: 10px;
     cursor: pointer;
 }
 .seat:hover{
-    background-color: #817f7f;
-}
-.seat.inspected{
-    background-color: #e3bd27;
-    color: #222;
-    outline: 2px solid #333232;
-    z-index: 1;
-}
-.seat.unavailable{
-    background: #a7a5a5;
-    font-size: 0;
-    cursor: not-allowed;
-}
-.seat.in-cart{
-    background: #222;
-    font-size: 0;
-}
-/*===Seat info===*/
-#seat-info{
-    margin-bottom: 12px;
-}
-#add-to-cart{
-    color: white;
-    background-color: #0e101e;
-    padding: 10px;
-    width: 100%;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-}
-#add-to-cart:hover{
-    background-color: #1e2869;
-}
-#add-to-cart:disabled{
-    background: #aaa9a9;
-    cursor: not-allowed;
+    filter: brightness(1.15);
 }
 .price-10{
     background: #1a1ab1;
@@ -211,7 +195,55 @@ stage{
 .price-25{
     background: #da3e3e;
 }
-
+.seat.inspected{
+    background-color: #e3bd27;
+    color: #222;
+    outline: 2px solid #333232;
+    z-index: 1;
+}
+.seat.unavailable{
+    background: #a7a5a5;
+    font-size: 0;
+    cursor: not-allowed;
+}
+.seat.unavailable:hover{
+    filter: none;
+}
+.seat.unavailable::after{
+    content: "✕";
+    font-size: 12px;
+}
+.seat.in-cart{
+    background: #222;
+    font-size: 0;
+}
+.seat.in-cart::after{
+    content: "✓";
+    font-size: 13px;
+}
+/*Seat info*/
+#seat-info{
+    margin-bottom: 12px;
+}
+#add-to-cart{
+    color: white;
+    background-color: #1e2a5a;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+#add-to-cart:hover{
+    background-color: #2f3f86;
+}
+#add-to-cart:disabled{
+    background: #aaa9a9;
+    cursor: not-allowed;
+}
 /*Basket*/
 #cart-items{
     list-style: none;
@@ -224,7 +256,7 @@ stage{
     align-items: center;
     padding: 10px 12px;
     margin-bottom: 8px;
-    background: #bdbfcb;
+    background: #e8ebf5;
     border-radius: 6px;
 }
 .cart-right{
@@ -242,14 +274,23 @@ stage{
 .remove-btn:hover{
     color: #d00;
 }
-#controls button:disabled{
-    opacity: 0.4;
-    cursor: not-allowed;
-}
+
 .footer{
     text-align: center;
     font-size: 14px;
     padding: 16px;
-    color:black;
-    
+    color: #1f2430;
+}
+/*for small screens*/
+@media (max-width: 800px){
+    .layout{
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+    }
+    #map-section{
+        grid-row: auto;
+    }
+    #map-viewport{
+        height: 380px;
+    }
 }
