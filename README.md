@@ -1,2 +1,0 @@
-# Interactive Venue Ticketing System
-
