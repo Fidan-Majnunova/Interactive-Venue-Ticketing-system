@@ -7,10 +7,14 @@ const TOP_MARGIN = 20;
 const STAGE_HEIGHT = 40;
 const MAP_WIDTH = 900;
 
+const STORAGE_KEY = "venueCart";
+
 const mapElement = document.getElementById("map");
 const legendElement = document.getElementById("legend");
 const seatInfoElement = document.getElementById("seat-info");
 const addButton = document.getElementById("add-to-cart");
+const cartItemsElement = document.getElementById("cart-items");
+const cartTotalElement = document.getElementById("cart-total");
 
 function getPriceClass(price) {
   for (const category of priceCategories) {
@@ -116,16 +120,25 @@ function buildVenue() {
   mapElement.style.height = (y + STAGE_HEIGHT + 20) + "px";
 }
 
-let inspectedSeat = null;   // the seat that is being inspected now
-let shownSeat = null;       // the seat whose details are on the panel now
-
+let inspectedSeat = null;   
+let shownSeat = null;     
 addButton.disabled = true;  // nothing to add yet
 
-//Cart
-const cartItemsElement = document.getElementById("cart-items");
-const cartTotalElement = document.getElementById("cart-total");
-
 let cart = [];   // cart { id, sectionName, row, number, price }
+
+function createTicket(seat) {
+  const section = sections.find(function (s) {
+    return s.id === seat.dataset.section;
+  });
+
+  return {
+    id: seat.dataset.id,
+    sectionName: section.name,
+    row: seat.dataset.row,
+    number: seat.dataset.number,
+    price: section.price
+  };
+}
 
 function renderCart() {
   cartItemsElement.innerHTML = "";
@@ -162,6 +175,51 @@ function renderCart() {
   cartTotalElement.textContent = total + " ₼";
 }
 
+
+function saveCart() { //Saving the cart in localStorage (only seat ids are saved)
+  const ids = cart.map(function (ticket) {
+    return ticket.id;
+  });
+
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(ids));
+  } catch (error) {
+    console.error("Could not save the cart", error);
+  }
+}
+
+function loadCart() {
+  let ids = [];
+
+  try {
+    ids = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+  } catch (error) {
+    ids = [];
+  }
+
+  if (!Array.isArray(ids)) {
+    ids = [];
+  }
+
+  ids.forEach(function (id) {
+    const seat = mapElement.querySelector('.seat[data-id="' + id + '"]');
+    const alreadyInCart = cart.some(function (ticket) {
+      return ticket.id === id;
+    });
+
+    // skipping seats that do not exist, or unavailable or are repeated
+    if (!seat || seat.classList.contains("unavailable") || alreadyInCart) {
+      return;
+    }
+
+    cart.push(createTicket(seat));
+    seat.classList.add("in-cart");
+  });
+
+  saveCart();
+  renderCart();
+}
+
 function addToCart(seat) {
   const id = seat.dataset.id;
 
@@ -170,20 +228,11 @@ function addToCart(seat) {
   });
 
   if (alreadyInCart || seat.classList.contains("unavailable")) {
-    return;   // adding the same seat twice, adding unavailable seats not allowed
+    return;   // adding the same seat twice or adding unavailable seats not allowed,
+    //therefore I wrote the conditional statement with OR.
   }
 
-  const section = sections.find(function (s) {
-    return s.id === seat.dataset.section;
-  });
-
-  cart.push({
-    id: id,
-    sectionName: section.name,
-    row: seat.dataset.row,
-    number: seat.dataset.number,
-    price: section.price
-  });
+  cart.push(createTicket(seat));
 
   seat.classList.remove("inspected");
   seat.classList.add("in-cart");
@@ -191,6 +240,7 @@ function addToCart(seat) {
   addButton.disabled = true;
 
   showSeatInfo(seat);
+  saveCart();
   renderCart();
 }
 
@@ -209,6 +259,7 @@ function removeFromCart(id) {
     }
   }
 
+  saveCart();
   renderCart();
 }
 
@@ -219,7 +270,7 @@ cartItemsElement.addEventListener("click", function (event) {
   }
 });
 
-//Seat inspection
+
 function clearInspected() {
   if (inspectedSeat) {
     inspectedSeat.classList.remove("inspected");
@@ -276,3 +327,4 @@ addButton.addEventListener("click", function () {
 
 buildLegend();
 buildVenue();
+loadCart();   // must run after buildVenue, the seats have to exist first
