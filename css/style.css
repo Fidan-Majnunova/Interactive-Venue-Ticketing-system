@@ -130,7 +130,6 @@ h2{
     left: 44px;
     top: 44px;
 }
-
 /*Map and locations*/
 #map-viewport{
     position: relative;
@@ -139,6 +138,12 @@ h2{
     background: #fafafc;
     border: 1px solid #c9cde0;
     border-radius: 8px;
+    cursor: grab;
+    user-select: none;
+}
+#map-viewport.dragging,
+#map-viewport.dragging .seat{
+    cursor: grabbing;
 }
 #map{
     position: absolute;
@@ -296,5 +301,25 @@ h2{
     }
     #map-viewport{
         height: 380px;
+    }
+}
+/*Controls inside the map on big screens*/
+@media (min-width: 801px){
+    #map-section{
+        position: relative;
+    }
+    #controls{
+        position: absolute;
+        right: 30px;
+        bottom: 30px;
+        z-index: 2;
+        margin: 0;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.85);
+        border-radius: 14px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+    #map-viewport{
+        height: 620px;
     }
 }
